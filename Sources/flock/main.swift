@@ -8,12 +8,15 @@
 
 import Foundation
 
+let version = "0.1.0"
 let arguments = CommandLine.arguments.dropFirst()
 
 let command: Command
 switch arguments.first {
 case .some("--help"), .some("-h"):
     command = HelpCommand()
+case .some("--version"), .some("-v"):
+    command = VersionCommand(version: version)
 default:
     command = HelpCommand()
 }
