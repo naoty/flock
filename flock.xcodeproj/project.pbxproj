@@ -8,10 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		3DB5406A1E61879800703CA0 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DB540691E61879800703CA0 /* main.swift */; };
+		3DB5406D1E6187F200703CA0 /* HelpCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DB5406C1E6187F200703CA0 /* HelpCommand.swift */; };
+		3DB5406F1E61888B00703CA0 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DB5406E1E61888B00703CA0 /* Result.swift */; };
+		3DB540711E61893600703CA0 /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DB540701E61893600703CA0 /* Command.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		3DB540691E61879800703CA0 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		3DB5406C1E6187F200703CA0 /* HelpCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpCommand.swift; sourceTree = "<group>"; };
+		3DB5406E1E61888B00703CA0 /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
+		3DB540701E61893600703CA0 /* Command.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Command.swift; sourceTree = "<group>"; };
 		OBJ_12 /* flock */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; path = flock; sourceTree = BUILT_PRODUCTS_DIR; };
 		OBJ_6 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -30,9 +36,20 @@
 		3DB540681E61878700703CA0 /* flock */ = {
 			isa = PBXGroup;
 			children = (
+				3DB5406B1E6187E700703CA0 /* Commands */,
 				3DB540691E61879800703CA0 /* main.swift */,
+				3DB5406E1E61888B00703CA0 /* Result.swift */,
 			);
 			path = flock;
+			sourceTree = "<group>";
+		};
+		3DB5406B1E6187E700703CA0 /* Commands */ = {
+			isa = PBXGroup;
+			children = (
+				3DB5406C1E6187F200703CA0 /* HelpCommand.swift */,
+				3DB540701E61893600703CA0 /* Command.swift */,
+			);
+			path = Commands;
 			sourceTree = "<group>";
 		};
 		OBJ_10 /* Tests */ = {
@@ -132,7 +149,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				3DB5406F1E61888B00703CA0 /* Result.swift in Sources */,
+				3DB5406D1E6187F200703CA0 /* HelpCommand.swift in Sources */,
 				3DB5406A1E61879800703CA0 /* main.swift in Sources */,
+				3DB540711E61893600703CA0 /* Command.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
