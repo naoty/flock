@@ -2,7 +2,7 @@
 //  HelpCommand.swift
 //  flock
 //
-//  Created by naoto kaneko on 2017/02/25.
+//  Created by Naoto kaneko on 2017/02/25.
 //  Copyright (c) 2017 Naoto Kaneko. All rights reserved.
 //
 

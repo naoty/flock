@@ -18,7 +18,7 @@ case .some("--help"), .some("-h"):
 case .some("--version"), .some("-v"):
     command = VersionCommand(version: version)
 default:
-    command = HelpCommand()
+    command = MainCommand()
 }
 
 let result = command.run()
