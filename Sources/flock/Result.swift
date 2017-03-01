@@ -8,5 +8,5 @@
 
 enum Result {
     case success(message: String)
-    case failure(message: String, errorCode: Int)
+    case failure(error: Error)
 }

@@ -17,8 +17,10 @@ case .some("--help"), .some("-h"):
     command = HelpCommand()
 case .some("--version"), .some("-v"):
     command = VersionCommand(version: version)
+case let path?:
+    command = MainCommand(path: path)
 default:
-    command = MainCommand()
+    command = HelpCommand()
 }
 
 let result = command.run()
@@ -26,7 +28,7 @@ switch result {
 case let .success(message):
     print(message)
     exit(0)
-case let .failure(message, errorCode):
-    print(message)
-    exit(Int32(errorCode))
+case let .failure(error):
+    print(error.message)
+    exit(Int32(error.code))
 }
