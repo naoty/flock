@@ -9,28 +9,13 @@
 import SourceKittenFramework
 
 struct MainCommand: Command {
-    private let structure: Structure?
-    private var error: Error?
+    private let structures: [Structure]
 
-    init(path: String) {
-        guard let file = File(path: path) else {
-            structure = nil
-            error = .cannotReadContent(path: path)
-            return
-        }
-
-        structure = Structure(file: file)
+    init(paths: [String]) {
+        structures = paths.map({ File(path: $0) }).flatMap({ $0 }).map({ Structure(file: $0) })
     }
     
     func run() -> Result {
-        if let error = self.error {
-            return .failure(error: error)
-        }
-
-        if let structure = structure {
-            return .success(message: structure.description)
-        }
-
         return .failure(error: .unknown)
     }
 }
