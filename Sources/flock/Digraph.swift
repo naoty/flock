@@ -6,7 +6,22 @@
 //  Copyright (c) 2017 Naoto Kaneko. All rights reserved.
 //
 
-struct Digraph {
+struct Digraph: CustomStringConvertible {
     let name: String
     let edges: [Edge]
+
+    private let indent = "  "
+
+    var description: String {
+        var buffer: [String] = []
+        buffer.append("digraph \(name) {")
+
+        for edge in edges {
+            buffer.append("\(indent)\(edge)")
+        }
+
+        buffer.append("}")
+
+        return buffer.joined(separator: "\n")
+    }
 }

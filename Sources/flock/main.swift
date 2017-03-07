@@ -50,12 +50,14 @@ func allSourcePaths(directoryPath: String? = nil) -> [String] {
     }
 
     guard let absolutePath = currentURL?.absoluteString else {
+        print("Faild to generate absolute path")
         return []
     }
 
     if let enumerator = fileManager.enumerator(atPath: absolutePath) {
         return enumerator.map({ "\(absolutePath)/\($0)" }).filter({ $0.hasSuffix(".swift") })
     } else {
+        print("Faild to enumerate")
         return []
     }
 }

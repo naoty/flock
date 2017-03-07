@@ -6,7 +6,13 @@
 //  Copyright (c) 2017 Naoto Kaneko. All rights reserved.
 //
 
-enum Edge {
+enum Edge: CustomStringConvertible {
     case directed(from: Node, to: Node)
-    case bidirected(Node, Node)
+
+    var description: String {
+        switch self {
+        case let .directed(left, _):
+            return "\(left)"
+        }
+    }
 }

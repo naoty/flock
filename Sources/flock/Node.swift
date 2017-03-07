@@ -6,6 +6,10 @@
 //  Copyright (c) 2017 Naoto Kaneko. All rights reserved.
 //
 
-struct Node {
+struct Node: CustomStringConvertible {
     let name: String
+
+    var description: String {
+        return name
+    }
 }
