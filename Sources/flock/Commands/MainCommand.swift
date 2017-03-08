@@ -58,7 +58,7 @@ struct MainCommand: Command {
 
             let rightNodes = makeRightNodes(fromStructures: substructures)
             for rightNode in rightNodes {
-                let edge = Edge.directed(from: leftNode, to: rightNode)
+                let edge = Edge(left: leftNode, right: rightNode)
                 edges.append(edge)
             }
         }

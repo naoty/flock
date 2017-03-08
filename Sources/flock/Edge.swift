@@ -6,13 +6,11 @@
 //  Copyright (c) 2017 Naoto Kaneko. All rights reserved.
 //
 
-enum Edge: CustomStringConvertible {
-    case directed(from: Node, to: Node)
+struct Edge: CustomStringConvertible {
+    let left: Node
+    let right: Node
 
     var description: String {
-        switch self {
-        case let .directed(left, right):
-            return "\"\(left)\" -> \"\(right)\";"
-        }
+        return "\"\(left)\" -> \"\(right)\";"
     }
 }
