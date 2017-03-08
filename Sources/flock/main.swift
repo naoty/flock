@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import PathKit
 
 let version = "0.1.0"
 
@@ -26,7 +27,7 @@ func main() {
 
 func makeCommand(arguments: [String]) -> Command {
     guard let firstArgument = arguments.first else {
-        let paths = allSourcePaths()
+        let paths = allSourcePaths(directoryPath: ".")
         return MainCommand(paths: paths)
     }
 
@@ -41,23 +42,12 @@ func makeCommand(arguments: [String]) -> Command {
     }
 }
 
-func allSourcePaths(directoryPath: String? = nil) -> [String] {
-    let fileManager = FileManager.default
-    var currentURL = URL(string: fileManager.currentDirectoryPath)
+func allSourcePaths(directoryPath: String) -> [String] {
+    let absolutePath = Path(directoryPath).absolute()
 
-    if let directoryPath = directoryPath {
-        currentURL?.appendPathComponent(directoryPath)
-    }
-
-    guard let absolutePath = currentURL?.absoluteString else {
-        print("Faild to generate absolute path")
-        return []
-    }
-
-    if let enumerator = fileManager.enumerator(atPath: absolutePath) {
-        return enumerator.map({ "\(absolutePath)/\($0)" }).filter({ $0.hasSuffix(".swift") })
-    } else {
-        print("Faild to enumerate")
+    do {
+        return try absolutePath.recursiveChildren().filter({ $0.extension == "swift" }).map({ $0.string })
+    } catch {
         return []
     }
 }
