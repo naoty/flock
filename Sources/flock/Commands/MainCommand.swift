@@ -16,51 +16,54 @@ struct MainCommand: Command {
     }
 
     func run() -> Result {
+        let edges = makeEdges()
+        let digraph = Digraph(name: "flock", edges: edges)
+        return .success(message: digraph.description)
+    }
+
+    private func makeEdges() -> Set<Edge> {
         var edges = Set<Edge>()
+        var leftNodes = Set<Node>()
 
         for structure in structures {
             guard let substructures = structure.dictionary["key.substructure"] as? [[String: SourceKitRepresentable]] else {
                 continue
             }
-            edges.formUnion(makeEdges(fromStructures: substructures))
-        }
 
-        let digraph = Digraph(name: "flock", edges: edges)
-        return .success(message: digraph.description)
-    }
+            for substructure in substructures {
+                guard let kindValue = substructure["key.kind"] as? String else {
+                    continue
+                }
 
-    private func makeEdges(fromStructures structures: [[String: SourceKitRepresentable]]) -> Set<Edge> {
-        var edges = Set<Edge>()
+                guard let kind = SwiftDeclarationKind(rawValue: kindValue) else {
+                    continue
+                }
 
-        for structure in structures {
-            guard let kindValue = structure["key.kind"] as? String else {
-                continue
-            }
+                guard [.struct, .class, .enum, .protocol].contains(kind) else {
+                    continue
+                }
 
-            guard let kind = SwiftDeclarationKind(rawValue: kindValue) else {
-                continue
-            }
+                guard let nameValue = substructure["key.name"] as? String else {
+                    continue
+                }
 
-            guard [.struct, .class, .enum, .protocol].contains(kind) else {
-                continue
-            }
+                let leftNode = Node(name: nameValue)
+                leftNodes.insert(leftNode)
 
-            guard let nameValue = structure["key.name"] as? String else {
-                continue
-            }
+                guard let subsubstructures = substructure["key.substructure"] as? [[String: SourceKitRepresentable]] else {
+                    continue
+                }
 
-            let leftNode = Node(name: nameValue)
-
-            guard let substructures = structure["key.substructure"] as? [[String: SourceKitRepresentable]] else {
-                continue
-            }
-
-            let rightNodes = makeRightNodes(fromStructures: substructures)
-            for rightNode in rightNodes {
-                let edge = Edge(left: leftNode, right: rightNode)
-                edges.insert(edge)
+                let rightNodes = makeRightNodes(fromStructures: subsubstructures)
+                for rightNode in rightNodes {
+                    let edge = Edge(left: leftNode, right: rightNode)
+                    edges.insert(edge)
+                }
             }
         }
+
+        // Filter out edges which right nodes are not included in left nodes
+        edges = Set<Edge>(edges.filter({ leftNodes.contains($0.right) }))
 
         return edges
     }
