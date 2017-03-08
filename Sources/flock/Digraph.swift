@@ -8,7 +8,7 @@
 
 struct Digraph: CustomStringConvertible {
     let name: String
-    let edges: [Edge]
+    let edges: Set<Edge>
 
     private let indent = "  "
 

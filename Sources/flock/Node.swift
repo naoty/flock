@@ -13,3 +13,15 @@ struct Node: CustomStringConvertible {
         return name
     }
 }
+
+extension Node: Equatable {
+    static func == (left: Node, right: Node) -> Bool {
+        return left.name == right.name
+    }
+}
+
+extension Node: Hashable {
+    var hashValue: Int {
+        return name.hashValue
+    }
+}

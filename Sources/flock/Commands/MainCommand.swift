@@ -16,22 +16,21 @@ struct MainCommand: Command {
     }
 
     func run() -> Result {
-        var edges: [Edge] = []
+        var edges = Set<Edge>()
 
         for structure in structures {
             guard let substructures = structure.dictionary["key.substructure"] as? [[String: SourceKitRepresentable]] else {
                 continue
             }
-
-            edges += makeEdges(fromStructures: substructures)
+            edges.formUnion(makeEdges(fromStructures: substructures))
         }
 
         let digraph = Digraph(name: "flock", edges: edges)
         return .success(message: digraph.description)
     }
 
-    private func makeEdges(fromStructures structures: [[String: SourceKitRepresentable]]) -> [Edge] {
-        var edges: [Edge] = []
+    private func makeEdges(fromStructures structures: [[String: SourceKitRepresentable]]) -> Set<Edge> {
+        var edges = Set<Edge>()
 
         for structure in structures {
             guard let kindValue = structure["key.kind"] as? String else {
@@ -59,7 +58,7 @@ struct MainCommand: Command {
             let rightNodes = makeRightNodes(fromStructures: substructures)
             for rightNode in rightNodes {
                 let edge = Edge(left: leftNode, right: rightNode)
-                edges.append(edge)
+                edges.insert(edge)
             }
         }
 
