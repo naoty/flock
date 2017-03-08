@@ -20,33 +20,83 @@ struct MainCommand: Command {
 
         for structure in structures {
             guard let substructures = structure.dictionary["key.substructure"] as? [[String: SourceKitRepresentable]] else {
-                return .failure(error: .unknown)
+                continue
             }
 
-            for substrucure in substructures {
-                guard let kindValue = substrucure["key.kind"] as? String else {
-                    continue
-                }
-
-                guard let kind = SwiftDeclarationKind(rawValue: kindValue) else {
-                    continue
-                }
-
-                guard let nameValue = substrucure["key.name"] as? String else {
-                    continue
-                }
-
-                switch kind {
-                case .struct, .class, .protocol:
-                    let edge = Edge.directed(from: Node(name: nameValue), to: Node(name: ""))
-                    edges.append(edge)
-                default:
-                    continue
-                }
-            }
+            edges += makeEdges(fromStructures: substructures)
         }
 
         let digraph = Digraph(name: "flock", edges: edges)
         return .success(message: digraph.description)
+    }
+
+    private func makeEdges(fromStructures structures: [[String: SourceKitRepresentable]]) -> [Edge] {
+        var edges: [Edge] = []
+
+        for structure in structures {
+            guard let kindValue = structure["key.kind"] as? String else {
+                continue
+            }
+
+            guard let kind = SwiftDeclarationKind(rawValue: kindValue) else {
+                continue
+            }
+
+            guard [.struct, .class, .enum, .protocol].contains(kind) else {
+                continue
+            }
+
+            guard let nameValue = structure["key.name"] as? String else {
+                continue
+            }
+
+            let leftNode = Node(name: nameValue)
+
+            guard let substructures = structure["key.substructure"] as? [[String: SourceKitRepresentable]] else {
+                continue
+            }
+
+            let rightNodes = makeRightNodes(fromStructures: substructures)
+            for rightNode in rightNodes {
+                let edge = Edge.directed(from: leftNode, to: rightNode)
+                edges.append(edge)
+            }
+        }
+
+        return edges
+    }
+
+    private func makeRightNodes(fromStructures structures: [[String: SourceKitRepresentable]]) -> [Node] {
+        var nodes: [Node] = []
+
+        for structure in structures {
+            guard let kindValue = structure["key.kind"] as? String else {
+                continue
+            }
+
+            guard let kind = SwiftDeclarationKind(rawValue: kindValue) else {
+                continue
+            }
+
+            guard [.varInstance, .varLocal, .varParameter, .varStatic].contains(kind) else {
+                continue
+            }
+
+            guard let nameValue = structure["key.typename"] as? String else {
+                continue
+            }
+
+            let node = Node(name: nameValue)
+            nodes.append(node)
+
+            guard let substructures = structure["key.substructure"] as? [[String: SourceKitRepresentable]] else {
+                continue
+            }
+
+            let subnodes = makeRightNodes(fromStructures: substructures)
+            nodes += subnodes
+        }
+
+        return nodes
     }
 }

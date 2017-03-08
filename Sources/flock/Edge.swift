@@ -11,8 +11,8 @@ enum Edge: CustomStringConvertible {
 
     var description: String {
         switch self {
-        case let .directed(left, _):
-            return "\(left)"
+        case let .directed(left, right):
+            return "\"\(left)\" -> \"\(right)\";"
         }
     }
 }
