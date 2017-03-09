@@ -50,6 +50,22 @@ struct MainCommand: Command {
                 let leftNode = Node(name: nameValue)
                 leftNodes.insert(leftNode)
 
+                if let inheritedTypes = substructure["key.inheritedtypes"] as? [[String: SourceKitRepresentable]] {
+                    for inheritedType in inheritedTypes {
+                        guard let inheritedTypeName = inheritedType["key.name"] as? String else {
+                            continue
+                        }
+
+                        let rightNode = Node(name: inheritedTypeName)
+                        if leftNode == rightNode {
+                            continue
+                        }
+
+                        let edge = Edge(left: leftNode, right: rightNode)
+                        edges.insert(edge)
+                    }
+                }
+
                 guard let subsubstructures = substructure["key.substructure"] as? [[String: SourceKitRepresentable]] else {
                     continue
                 }
