@@ -56,6 +56,10 @@ struct MainCommand: Command {
 
                 let rightNodes = makeRightNodes(fromStructures: subsubstructures)
                 for rightNode in rightNodes {
+                    if leftNode == rightNode {
+                        continue
+                    }
+
                     let edge = Edge(left: leftNode, right: rightNode)
                     edges.insert(edge)
                 }
