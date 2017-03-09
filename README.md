@@ -1,16 +1,8 @@
 # flock
-Object graph in Swift
 
-## Installation
-
-```sh
-$ brew tap naoty/misc
-$ brew install flock
-```
-
-## Usage
+![flock](flock.png)
 
 ```sh
-$ flock [file ...]
+$ flock [directory]
 ```
 
