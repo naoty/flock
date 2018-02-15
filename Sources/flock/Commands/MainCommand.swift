@@ -12,7 +12,13 @@ struct MainCommand: Command {
     private let structures: [Structure]
 
     init(paths: [String]) {
-        structures = paths.map({ File(path: $0) }).flatMap({ $0 }).map({ Structure(file: $0) })
+        do {
+        structures = try paths.map({ File(path: $0) }).flatMap({ $0 }).map({ try Structure(file: $0) })
+        }
+        catch {
+            print("There was a serious error")
+            structures = []
+        }
     }
 
     func run() -> Result {
