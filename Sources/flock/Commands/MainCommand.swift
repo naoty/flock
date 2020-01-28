@@ -13,7 +13,7 @@ struct MainCommand: Command {
 
     init(paths: [String]) {
         do {
-        structures = try paths.map({ File(path: $0) }).flatMap({ $0 }).map({ try Structure(file: $0) })
+        structures = try paths.map({ File(path: $0) }).compactMap({ $0 }).map({ try Structure(file: $0) })
         }
         catch {
             print("There was a serious error")
