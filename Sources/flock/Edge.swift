@@ -22,7 +22,8 @@ extension Edge: Equatable {
 }
 
 extension Edge: Hashable {
-    var hashValue: Int {
-        return left.hashValue ^ right.hashValue
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(left.hashValue)
+        hasher.combine(right.hashValue)
     }
 }

@@ -21,7 +21,7 @@ extension Node: Equatable {
 }
 
 extension Node: Hashable {
-    var hashValue: Int {
-        return name.hashValue
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(name)
     }
 }
